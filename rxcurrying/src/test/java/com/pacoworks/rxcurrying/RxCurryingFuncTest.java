@@ -1,4 +1,3 @@
-
 /*
  * Copyright (c) pakoito 2016
  *
@@ -20,7 +19,6 @@ package com.pacoworks.rxcurrying;
 import org.junit.Assert;
 import org.junit.Test;
 
-import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func5;
 
@@ -30,7 +28,7 @@ import rx.functions.Func5;
 public class RxCurryingFuncTest {
     @Test
     public void curry() throws Exception {
-        Func1<String, Func1<String, Func1<String, Func1<String, Func1<String, Func0<String>>>>>> secondVariable = RxCurryingFunc
+        Func1<String, Func1<String, Func1<String, Func1<String, Func1<String, String>>>>> secondVariable = RxCurryingFunc
                 .curry(new Func5<String, String, String, String, String, String>() {
                     @Override
                     public String call(String first, String second, String third, String fourth,
@@ -38,8 +36,8 @@ public class RxCurryingFuncTest {
                         return first + second + third + fourth + fifth;
                     }
                 });
-        Func0<String> last = secondVariable.call("Hello ").call("This ").call("Is ")
-                .call("Curried ").call("Func");
-        Assert.assertEquals("Hello This Is Curried Func", last.call());
+        String result = secondVariable.call("Hello ").call("This ").call("Is ").call("Curried ")
+                .call("Func");
+        Assert.assertEquals("Hello This Is Curried Func", result);
     }
 }

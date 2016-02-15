@@ -8,17 +8,16 @@ RxCurrying contains two classes, `RxCurryingAction` and `RxCurryingFunc`. Each c
 
 Function to print the sum of two numbers:
 ```
-Func1<Integer, Func1<Integer, Action0>> variable = RxCurryingAction.curry((int first, int second) -> { System.out.print(first + second); });
-Func1<Integer, Action0> firstForm = variable.call(3);
-Action0 secondForm = firstForm.call(2);
-secondForm.call(); // prints 5
+Func1<Integer, Action1<Integer>> adder = RxCurryingAction.curry((int first, int second) -> { System.out.print(first + second); });
+Func1<Integer, Action0> intermediate = adder.call(3);
+intermediate.call(2);  // prints 5
 ```
 
 Append 5 strings:
 ```
-Func1<String, Func1<String, Func1<String, Func1<String, Func1<String, Func0<String>>>>>> secondVariable = RxCurryingFunc.curry((String first, String second, String third, String fourth, String fifth) -> { return first + second + third + fourth + fifth; );
-Func0<String> last = secondVariable.call("Hello ").call("This ").call("Is ").call("Curried ").call("Func ");
-String value = last.call(); // value == "Hello This is Curried Func"
+Func1<String, Func1<String, Func1<String, Func1<String, Func1<String, String>>>>> appender = RxCurryingFunc.curry((String first, String second, String third, String fourth, String fifth) -> { return first + second + third + fourth + fifth; );
+Func1<String, String> intermediate = appender.call("Hello ").call("This ").call("Is ").call("Curried ");
+String value = last.call("Func"); // value == "Hello This is Curried Func"
 ```
 
 ##Distribution

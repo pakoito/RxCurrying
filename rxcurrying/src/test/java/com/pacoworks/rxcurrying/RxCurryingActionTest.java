@@ -20,7 +20,7 @@ package com.pacoworks.rxcurrying;
 import org.junit.Assert;
 import org.junit.Test;
 
-import rx.functions.Action0;
+import rx.functions.Action1;
 import rx.functions.Action2;
 import rx.functions.Func1;
 
@@ -30,15 +30,14 @@ import rx.functions.Func1;
 public class RxCurryingActionTest {
     @Test
     public void curry() throws Exception {
-        Func1<Integer, Func1<Integer, Action0>> variable = RxCurryingAction
+        Func1<Integer, Action1<Integer>> variable = RxCurryingAction
                 .curry(new Action2<Integer, Integer>() {
                     @Override
                     public void call(Integer first, Integer second) {
                         Assert.assertEquals(5, first + second);
                     }
                 });
-        Func1<Integer, Action0> firstForm = variable.call(3);
-        Action0 secondForm = firstForm.call(2);
-        secondForm.call();
+        Action1<Integer> firstForm = variable.call(3);
+        firstForm.call(2);
     }
 }

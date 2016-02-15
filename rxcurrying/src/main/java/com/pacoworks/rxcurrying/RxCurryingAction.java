@@ -27,31 +27,31 @@ public class RxCurryingAction {
     private RxCurryingAction() {
     }
 
-    public static <A> Func1<A, Action0> curry(final Action1<A> action) {
-        return new Func1<A, Action0>() {
+    public static <A, B> Func1<A, Action1<B>> curry(final Action2<A, B> action) {
+        return new Func1<A, Action1<B>>() {
             @Override
-            public Action0 call(final A a) {
-                return new Action0() {
+            public Action1<B> call(final A a) {
+                return new Action1<B>() {
                     @Override
-                    public void call() {
-                        action.call(a);
+                    public void call(final B b) {
+                        action.call(a, b);
                     }
                 };
             }
         };
     }
 
-    public static <A, B> Func1<A, Func1<B, Action0>> curry(final Action2<A, B> action) {
-        return new Func1<A, Func1<B, Action0>>() {
+    public static <A, B, C> Func1<A, Func1<B, Action1<C>>> curry(final Action3<A, B, C> action) {
+        return new Func1<A, Func1<B, Action1<C>>>() {
             @Override
-            public Func1<B, Action0> call(final A a) {
-                return new Func1<B, Action0>() {
+            public Func1<B, Action1<C>> call(final A a) {
+                return new Func1<B, Action1<C>>() {
                     @Override
-                    public Action0 call(final B b) {
-                        return new Action0() {
+                    public Action1<C> call(final B b) {
+                        return new Action1<C>() {
                             @Override
-                            public void call() {
-                                action.call(a, b);
+                            public void call(final C c) {
+                                action.call(a, b, c);
                             }
                         };
                     }
@@ -60,21 +60,21 @@ public class RxCurryingAction {
         };
     }
 
-    public static <A, B, C> Func1<A, Func1<B, Func1<C, Action0>>> curry(
-            final Action3<A, B, C> action) {
-        return new Func1<A, Func1<B, Func1<C, Action0>>>() {
+    public static <A, B, C, D> Func1<A, Func1<B, Func1<C, Action1<D>>>> curry(
+            final Action4<A, B, C, D> action) {
+        return new Func1<A, Func1<B, Func1<C, Action1<D>>>>() {
             @Override
-            public Func1<B, Func1<C, Action0>> call(final A a) {
-                return new Func1<B, Func1<C, Action0>>() {
+            public Func1<B, Func1<C, Action1<D>>> call(final A a) {
+                return new Func1<B, Func1<C, Action1<D>>>() {
                     @Override
-                    public Func1<C, Action0> call(final B b) {
-                        return new Func1<C, Action0>() {
+                    public Func1<C, Action1<D>> call(final B b) {
+                        return new Func1<C, Action1<D>>() {
                             @Override
-                            public Action0 call(final C c) {
-                                return new Action0() {
+                            public Action1<D> call(final C c) {
+                                return new Action1<D>() {
                                     @Override
-                                    public void call() {
-                                        action.call(a, b, c);
+                                    public void call(final D d) {
+                                        action.call(a, b, c, d);
                                     }
                                 };
                             }
@@ -85,24 +85,24 @@ public class RxCurryingAction {
         };
     }
 
-    public static <A, B, C, D> Func1<A, Func1<B, Func1<C, Func1<D, Action0>>>> curry(
-            final Action4<A, B, C, D> action) {
-        return new Func1<A, Func1<B, Func1<C, Func1<D, Action0>>>>() {
+    public static <A, B, C, D, E> Func1<A, Func1<B, Func1<C, Func1<D, Action1<E>>>>> curry(
+            final Action5<A, B, C, D, E> action) {
+        return new Func1<A, Func1<B, Func1<C, Func1<D, Action1<E>>>>>() {
             @Override
-            public Func1<B, Func1<C, Func1<D, Action0>>> call(final A a) {
-                return new Func1<B, Func1<C, Func1<D, Action0>>>() {
+            public Func1<B, Func1<C, Func1<D, Action1<E>>>> call(final A a) {
+                return new Func1<B, Func1<C, Func1<D, Action1<E>>>>() {
                     @Override
-                    public Func1<C, Func1<D, Action0>> call(final B b) {
-                        return new Func1<C, Func1<D, Action0>>() {
+                    public Func1<C, Func1<D, Action1<E>>> call(final B b) {
+                        return new Func1<C, Func1<D, Action1<E>>>() {
                             @Override
-                            public Func1<D, Action0> call(final C c) {
-                                return new Func1<D, Action0>() {
+                            public Func1<D, Action1<E>> call(final C c) {
+                                return new Func1<D, Action1<E>>() {
                                     @Override
-                                    public Action0 call(final D d) {
-                                        return new Action0() {
+                                    public Action1<E> call(final D d) {
+                                        return new Action1<E>() {
                                             @Override
-                                            public void call() {
-                                                action.call(a, b, c, d);
+                                            public void call(final E e) {
+                                                action.call(a, b, c, d, e);
                                             }
                                         };
                                     }
@@ -115,27 +115,27 @@ public class RxCurryingAction {
         };
     }
 
-    public static <A, B, C, D, E> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Action0>>>>> curry(
-            final Action5<A, B, C, D, E> action) {
-        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Action0>>>>>() {
+    public static <A, B, C, D, E, F> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Action1<F>>>>>> curry(
+            final Action6<A, B, C, D, E, F> action) {
+        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Action1<F>>>>>>() {
             @Override
-            public Func1<B, Func1<C, Func1<D, Func1<E, Action0>>>> call(final A a) {
-                return new Func1<B, Func1<C, Func1<D, Func1<E, Action0>>>>() {
+            public Func1<B, Func1<C, Func1<D, Func1<E, Action1<F>>>>> call(final A a) {
+                return new Func1<B, Func1<C, Func1<D, Func1<E, Action1<F>>>>>() {
                     @Override
-                    public Func1<C, Func1<D, Func1<E, Action0>>> call(final B b) {
-                        return new Func1<C, Func1<D, Func1<E, Action0>>>() {
+                    public Func1<C, Func1<D, Func1<E, Action1<F>>>> call(final B b) {
+                        return new Func1<C, Func1<D, Func1<E, Action1<F>>>>() {
                             @Override
-                            public Func1<D, Func1<E, Action0>> call(final C c) {
-                                return new Func1<D, Func1<E, Action0>>() {
+                            public Func1<D, Func1<E, Action1<F>>> call(final C c) {
+                                return new Func1<D, Func1<E, Action1<F>>>() {
                                     @Override
-                                    public Func1<E, Action0> call(final D d) {
-                                        return new Func1<E, Action0>() {
+                                    public Func1<E, Action1<F>> call(final D d) {
+                                        return new Func1<E, Action1<F>>() {
                                             @Override
-                                            public Action0 call(final E e) {
-                                                return new Action0() {
+                                            public Action1<F> call(final E e) {
+                                                return new Action1<F>() {
                                                     @Override
-                                                    public void call() {
-                                                        action.call(a, b, c, d, e);
+                                                    public void call(final F f) {
+                                                        action.call(a, b, c, d, e, f);
                                                     }
                                                 };
                                             }
@@ -150,30 +150,30 @@ public class RxCurryingAction {
         };
     }
 
-    public static <A, B, C, D, E, F> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Action0>>>>>> curry(
-            final Action6<A, B, C, D, E, F> action) {
-        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Action0>>>>>>() {
+    public static <A, B, C, D, E, F, G> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Action1<G>>>>>>> curry(
+            final Action7<A, B, C, D, E, F, G> action) {
+        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Action1<G>>>>>>>() {
             @Override
-            public Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Action0>>>>> call(final A a) {
-                return new Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Action0>>>>>() {
+            public Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Action1<G>>>>>> call(final A a) {
+                return new Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Action1<G>>>>>>() {
                     @Override
-                    public Func1<C, Func1<D, Func1<E, Func1<F, Action0>>>> call(final B b) {
-                        return new Func1<C, Func1<D, Func1<E, Func1<F, Action0>>>>() {
+                    public Func1<C, Func1<D, Func1<E, Func1<F, Action1<G>>>>> call(final B b) {
+                        return new Func1<C, Func1<D, Func1<E, Func1<F, Action1<G>>>>>() {
                             @Override
-                            public Func1<D, Func1<E, Func1<F, Action0>>> call(final C c) {
-                                return new Func1<D, Func1<E, Func1<F, Action0>>>() {
+                            public Func1<D, Func1<E, Func1<F, Action1<G>>>> call(final C c) {
+                                return new Func1<D, Func1<E, Func1<F, Action1<G>>>>() {
                                     @Override
-                                    public Func1<E, Func1<F, Action0>> call(final D d) {
-                                        return new Func1<E, Func1<F, Action0>>() {
+                                    public Func1<E, Func1<F, Action1<G>>> call(final D d) {
+                                        return new Func1<E, Func1<F, Action1<G>>>() {
                                             @Override
-                                            public Func1<F, Action0> call(final E e) {
-                                                return new Func1<F, Action0>() {
+                                            public Func1<F, Action1<G>> call(final E e) {
+                                                return new Func1<F, Action1<G>>() {
                                                     @Override
-                                                    public Action0 call(final F f) {
-                                                        return new Action0() {
+                                                    public Action1<G> call(final F f) {
+                                                        return new Action1<G>() {
                                                             @Override
-                                                            public void call() {
-                                                                action.call(a, b, c, d, e, f);
+                                                            public void call(final G g) {
+                                                                action.call(a, b, c, d, e, f, g);
                                                             }
                                                         };
                                                     }
@@ -190,36 +190,38 @@ public class RxCurryingAction {
         };
     }
 
-    public static <A, B, C, D, E, F, G> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action0>>>>>>> curry(
-            final Action7<A, B, C, D, E, F, G> action) {
-        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action0>>>>>>>() {
+    public static <A, B, C, D, E, F, G, H> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action1<H>>>>>>>> curry(
+            final Action8<A, B, C, D, E, F, G, H> action) {
+        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action1<H>>>>>>>>() {
             @Override
-            public Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action0>>>>>> call(
+            public Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action1<H>>>>>>> call(
                     final A a) {
-                return new Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action0>>>>>>() {
+                return new Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action1<H>>>>>>>() {
                     @Override
-                    public Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action0>>>>> call(
+                    public Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action1<H>>>>>> call(
                             final B b) {
-                        return new Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action0>>>>>() {
+                        return new Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Action1<H>>>>>>() {
                             @Override
-                            public Func1<D, Func1<E, Func1<F, Func1<G, Action0>>>> call(final C c) {
-                                return new Func1<D, Func1<E, Func1<F, Func1<G, Action0>>>>() {
+                            public Func1<D, Func1<E, Func1<F, Func1<G, Action1<H>>>>> call(
+                                    final C c) {
+                                return new Func1<D, Func1<E, Func1<F, Func1<G, Action1<H>>>>>() {
                                     @Override
-                                    public Func1<E, Func1<F, Func1<G, Action0>>> call(final D d) {
-                                        return new Func1<E, Func1<F, Func1<G, Action0>>>() {
+                                    public Func1<E, Func1<F, Func1<G, Action1<H>>>> call(
+                                            final D d) {
+                                        return new Func1<E, Func1<F, Func1<G, Action1<H>>>>() {
                                             @Override
-                                            public Func1<F, Func1<G, Action0>> call(final E e) {
-                                                return new Func1<F, Func1<G, Action0>>() {
+                                            public Func1<F, Func1<G, Action1<H>>> call(final E e) {
+                                                return new Func1<F, Func1<G, Action1<H>>>() {
                                                     @Override
-                                                    public Func1<G, Action0> call(final F f) {
-                                                        return new Func1<G, Action0>() {
+                                                    public Func1<G, Action1<H>> call(final F f) {
+                                                        return new Func1<G, Action1<H>>() {
                                                             @Override
-                                                            public Action0 call(final G g) {
-                                                                return new Action0() {
+                                                            public Action1<H> call(final G g) {
+                                                                return new Action1<H>() {
                                                                     @Override
-                                                                    public void call() {
+                                                                    public void call(final H h) {
                                                                         action.call(a, b, c, d, e,
-                                                                                f, g);
+                                                                                f, g, h);
                                                                     }
                                                                 };
                                                             }
@@ -238,118 +240,47 @@ public class RxCurryingAction {
         };
     }
 
-    public static <A, B, C, D, E, F, G, H> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>>>>> curry(
-            final Action8<A, B, C, D, E, F, G, H> action) {
-        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>>>>>() {
+    public static <A, B, C, D, E, F, G, H, I> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>>>>> curry(
+            final Action9<A, B, C, D, E, F, G, H, I> action) {
+        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>>>>>() {
             @Override
-            public Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>>>> call(
+            public Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>>>> call(
                     final A a) {
-                return new Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>>>>() {
+                return new Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>>>>() {
                     @Override
-                    public Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>>> call(
+                    public Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>>> call(
                             final B b) {
-                        return new Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>>>() {
+                        return new Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>>>() {
                             @Override
-                            public Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>> call(
+                            public Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>> call(
                                     final C c) {
-                                return new Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>>() {
+                                return new Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>>() {
                                     @Override
-                                    public Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>> call(
+                                    public Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>> call(
                                             final D d) {
-                                        return new Func1<E, Func1<F, Func1<G, Func1<H, Action0>>>>() {
+                                        return new Func1<E, Func1<F, Func1<G, Func1<H, Action1<I>>>>>() {
                                             @Override
-                                            public Func1<F, Func1<G, Func1<H, Action0>>> call(
+                                            public Func1<F, Func1<G, Func1<H, Action1<I>>>> call(
                                                     final E e) {
-                                                return new Func1<F, Func1<G, Func1<H, Action0>>>() {
+                                                return new Func1<F, Func1<G, Func1<H, Action1<I>>>>() {
                                                     @Override
-                                                    public Func1<G, Func1<H, Action0>> call(
+                                                    public Func1<G, Func1<H, Action1<I>>> call(
                                                             final F f) {
-                                                        return new Func1<G, Func1<H, Action0>>() {
+                                                        return new Func1<G, Func1<H, Action1<I>>>() {
                                                             @Override
-                                                            public Func1<H, Action0> call(
+                                                            public Func1<H, Action1<I>> call(
                                                                     final G g) {
-                                                                return new Func1<H, Action0>() {
+                                                                return new Func1<H, Action1<I>>() {
                                                                     @Override
-                                                                    public Action0 call(final H h) {
-                                                                        return new Action0() {
+                                                                    public Action1<I> call(
+                                                                            final H h) {
+                                                                        return new Action1<I>() {
                                                                             @Override
-                                                                            public void call() {
+                                                                            public void call(
+                                                                                    final I i) {
                                                                                 action.call(a, b, c,
                                                                                         d, e, f, g,
-                                                                                        h);
-                                                                            }
-                                                                        };
-                                                                    }
-                                                                };
-                                                            }
-                                                        };
-                                                    }
-                                                };
-                                            }
-                                        };
-                                    }
-                                };
-                            }
-                        };
-                    }
-                };
-            }
-        };
-    }
-
-    public static <A, B, C, D, E, F, G, H, I> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>>>>> curry(
-            final Action9<A, B, C, D, E, F, G, H, I> action) {
-        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>>>>>() {
-            @Override
-            public Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>>>> call(
-                    final A a) {
-                return new Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>>>>() {
-                    @Override
-                    public Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>>> call(
-                            final B b) {
-                        return new Func1<C, Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>>>() {
-                            @Override
-                            public Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>> call(
-                                    final C c) {
-                                return new Func1<D, Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>>() {
-                                    @Override
-                                    public Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>> call(
-                                            final D d) {
-                                        return new Func1<E, Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>>() {
-                                            @Override
-                                            public Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>> call(
-                                                    final E e) {
-                                                return new Func1<F, Func1<G, Func1<H, Func1<I, Action0>>>>() {
-                                                    @Override
-                                                    public Func1<G, Func1<H, Func1<I, Action0>>> call(
-                                                            final F f) {
-                                                        return new Func1<G, Func1<H, Func1<I, Action0>>>() {
-                                                            @Override
-                                                            public Func1<H, Func1<I, Action0>> call(
-                                                                    final G g) {
-                                                                return new Func1<H, Func1<I, Action0>>() {
-                                                                    @Override
-                                                                    public Func1<I, Action0> call(
-                                                                            final H h) {
-                                                                        return new Func1<I, Action0>() {
-                                                                            @Override
-                                                                            public Action0 call(
-                                                                                    final I i) {
-                                                                                return new Action0() {
-                                                                                    @Override
-                                                                                    public void call() {
-                                                                                        action.call(
-                                                                                                a,
-                                                                                                b,
-                                                                                                c,
-                                                                                                d,
-                                                                                                e,
-                                                                                                f,
-                                                                                                g,
-                                                                                                h,
-                                                                                                i);
-                                                                                    }
-                                                                                };
+                                                                                        h, i);
                                                                             }
                                                                         };
                                                                     }
