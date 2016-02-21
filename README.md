@@ -9,7 +9,7 @@ RxCurrying contains two classes, `RxCurryingAction` and `RxCurryingFunc`. Each c
 Function to print the sum of two numbers:
 ```
 Func1<Integer, Action1<Integer>> adder = RxCurryingAction.curry((int first, int second) -> { System.out.print(first + second); });
-Func1<Integer, Action0> intermediate = adder.call(3);
+Func1<Integer, Action1<Integer>> intermediate = adder.call(3);
 intermediate.call(2);  // prints 5
 ```
 
