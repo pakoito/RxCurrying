@@ -4,7 +4,7 @@ RxCurrying is a library to allow [currying](https://en.wikipedia.org/wiki/Curryi
 
 ##Usage
 
-RxCurrying contains two classes, `RxCurryingAction` and `RxCurryingFunc`. Each contains a set of `curry()` methods to do split any function into its curried version. Curried methods allows calling them one parameter at a time, and execute them at the end. For example, a `Func3<A, B, C, R>` becomes a `Func1<A, Func1<B, Func1<C, Func0<R>>>>`, or an `Action4<A, B, C, D>` becomes `Func1<A, Func1<B, Func1<C, Func1<D, Action0>>>>`.
+RxCurrying contains two classes, `RxCurryingAction` and `RxCurryingFunc`. Each contains a set of `curry()` methods to do split any function into its curried version. Curried methods allows calling them one parameter at a time, and execute them at the end. For example, a `Func3<A, B, C, R>` becomes a `Func1<A, Func1<B, Func1<C, R>>>`, or an `Action4<A, B, C, D>` becomes `Func1<A, Func1<B, Func1<C, Action1<D>>>`.
 
 Function to print the sum of two numbers:
 ```
