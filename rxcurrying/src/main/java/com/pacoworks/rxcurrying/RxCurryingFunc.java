@@ -19,6 +19,7 @@ package com.pacoworks.rxcurrying;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.util.Arrays;
 
 import rx.functions.Func1;
 import rx.functions.Func2;
@@ -40,17 +41,28 @@ public class RxCurryingFunc {
 
     private static final Class[] FUNC1_INTERFACES = new Class[]{Func1.class};
 
-    private static class Func1InvocationHandler implements InvocationHandler {
+    private static class Func1InvocationHandler<T> implements InvocationHandler {
 
-        private final Function function;
+        private final T function;
         private final Method callMethod;
         private final Object[] arguments;
-        private int argumentCount = 0;
+        private final int targetArgumentCount;
 
-        private Func1InvocationHandler(Function function) {
+        private Func1InvocationHandler(T function) {
             this.function = function;
             this.callMethod = function.getClass().getMethods()[0];
-            this.arguments = new Object[callMethod.getParameters().length];
+            this.targetArgumentCount = callMethod.getParameters().length;
+
+            this.arguments = new Object[0];
+        }
+
+        public Func1InvocationHandler(Func1InvocationHandler<T> original, Object newArgument) {
+            this.function = original.function;
+            this.callMethod = original.callMethod;
+            this.targetArgumentCount = original.targetArgumentCount;
+
+            this.arguments = Arrays.copyOf(original.arguments, original.arguments.length + 1);
+            this.arguments[original.arguments.length] = newArgument;
         }
 
         @Override
@@ -58,12 +70,11 @@ public class RxCurryingFunc {
             if (args[0] instanceof Func1) {
                 return Proxy.newProxyInstance(classloader(), FUNC1_INTERFACES, this);
             } else {
-                arguments[argumentCount] = args[0];
-                argumentCount++;
-                if (argumentCount == arguments.length) {
-                    return callMethod.invoke(function, arguments);
+                Func1InvocationHandler<T> handler = new Func1InvocationHandler<>(this, args[0]);
+                if (handler.arguments.length == targetArgumentCount) {
+                    return callMethod.invoke(function, handler.arguments);
                 } else {
-                    return Proxy.newProxyInstance(classloader(), FUNC1_INTERFACES, this);
+                    return Proxy.newProxyInstance(classloader(), FUNC1_INTERFACES, handler);
                 }
             }
         }
