@@ -16,7 +16,21 @@
 
 package com.pacoworks.rxcurrying;
 
-import rx.functions.*;
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.LinkedList;
+import java.util.List;
+
+import rx.functions.Func1;
+import rx.functions.Func2;
+import rx.functions.Func3;
+import rx.functions.Func4;
+import rx.functions.Func5;
+import rx.functions.Func6;
+import rx.functions.Func7;
+import rx.functions.Func8;
+import rx.functions.Func9;
 
 /**
  * Helper class to curry FuncN objects
@@ -24,21 +38,53 @@ import rx.functions.*;
  * @author pakoito
  */
 public class RxCurryingFunc {
-    private RxCurryingFunc() {
+
+    private class Func1InvocationHandler implements InvocationHandler {
+
+        @Override
+        public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+
+            return null;
+        }
+
+    }
+
+    protected RxCurryingFunc() {
     }
 
     public static <A, B, R> Func1<A, Func1<B, R>> curry(final Func2<A, B, R> func) {
-        return new Func1<A, Func1<B, R>>() {
+        return (Func1<A, Func1<B, R>>) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Func1.class}, new InvocationHandler() {
+
+            List<Object> arguments = new LinkedList<>();
+
             @Override
-            public Func1<B, R> call(final A a) {
-                return new Func1<B, R>() {
-                    @Override
-                    public R call(final B b) {
-                        return func.call(a, b);
+            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+                if (args[0] instanceof Func1) {
+                    return Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Func1.class}, this);
+                } else {
+                    arguments.add(args[0]);
+                    final Method callMethod = func.getClass().getMethods()[0];
+                    if (arguments.size() == callMethod.getParameterCount()) {
+                        R result = (R) callMethod.invoke(func, arguments.toArray());
+                        arguments.clear();
+                        return result;
+                    } else {
+                        return Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Func1.class}, this);
                     }
-                };
+                }
             }
-        };
+        });
+//        return new Func1<A, Func1<B, R>>() {
+//            @Override
+//            public Func1<B, R> call(final A a) {
+//                return new Func1<B, R>() {
+//                    @Override
+//                    public R call(final B b) {
+//                        return func.call(a, b);
+//                    }
+//                };
+//            }
+//        };
     }
 
     public static <A, B, C, R> Func1<A, Func1<B, Func1<C, R>>> curry(final Func3<A, B, C, R> func) {
