@@ -20,12 +20,27 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.functions.Func5;
 
 /**
  * Created by Paco on 14/02/2016. See LICENSE.md
  */
 public class RxCurryingFuncTest {
+
+    @Test
+    public void curry_whenUsingFunc2() throws Exception {
+        Func1<String, Func1<String, String>> curried = RxCurryingFunc.curry(new Func2<String, String, String>() {
+            @Override
+            public String call(String first, String second) {
+                return first + second;
+            }
+        });
+
+        String result = curried.call("Hello ").call("World");
+        Assert.assertEquals("Hello World", result);
+    }
+
     @Test
     public void curry() throws Exception {
         Func1<String, Func1<String, Func1<String, Func1<String, Func1<String, String>>>>> secondVariable = RxCurryingFunc
