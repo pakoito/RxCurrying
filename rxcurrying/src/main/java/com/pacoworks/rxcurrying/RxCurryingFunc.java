@@ -19,8 +19,6 @@ package com.pacoworks.rxcurrying;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
-import java.util.LinkedList;
-import java.util.List;
 
 import rx.functions.Func1;
 import rx.functions.Func2;
@@ -31,6 +29,7 @@ import rx.functions.Func6;
 import rx.functions.Func7;
 import rx.functions.Func8;
 import rx.functions.Func9;
+import rx.functions.Function;
 
 /**
  * Helper class to curry FuncN objects
@@ -39,12 +38,34 @@ import rx.functions.Func9;
  */
 public class RxCurryingFunc {
 
-    private class Func1InvocationHandler implements InvocationHandler {
+    private static final Class[] FUNC1_INTERFACES = new Class[]{Func1.class};
+
+    private static class Func1InvocationHandler implements InvocationHandler {
+
+        private final Function function;
+        private final Method callMethod;
+        private final Object[] arguments;
+        private int argumentCount = 0;
+
+        private Func1InvocationHandler(Function function) {
+            this.function = function;
+            this.callMethod = function.getClass().getMethods()[0];
+            arguments = new Object[callMethod.getParameterCount()];
+        }
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-
-            return null;
+            if (args[0] instanceof Func1) {
+                return Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Func1.class}, this);
+            } else {
+                arguments[argumentCount] = args[0];
+                argumentCount++;
+                if (argumentCount == callMethod.getParameterCount()) {
+                    return callMethod.invoke(function, arguments);
+                } else {
+                    return Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Func1.class}, this);
+                }
+            }
         }
 
     }
@@ -53,38 +74,11 @@ public class RxCurryingFunc {
     }
 
     public static <A, B, R> Func1<A, Func1<B, R>> curry(final Func2<A, B, R> func) {
-        return (Func1<A, Func1<B, R>>) Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Func1.class}, new InvocationHandler() {
+        return (Func1<A, Func1<B, R>>) proxyFunction(func);
+    }
 
-            List<Object> arguments = new LinkedList<>();
-
-            @Override
-            public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                if (args[0] instanceof Func1) {
-                    return Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Func1.class}, this);
-                } else {
-                    arguments.add(args[0]);
-                    final Method callMethod = func.getClass().getMethods()[0];
-                    if (arguments.size() == callMethod.getParameterCount()) {
-                        R result = (R) callMethod.invoke(func, arguments.toArray());
-                        arguments.clear();
-                        return result;
-                    } else {
-                        return Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), new Class[]{Func1.class}, this);
-                    }
-                }
-            }
-        });
-//        return new Func1<A, Func1<B, R>>() {
-//            @Override
-//            public Func1<B, R> call(final A a) {
-//                return new Func1<B, R>() {
-//                    @Override
-//                    public R call(final B b) {
-//                        return func.call(a, b);
-//                    }
-//                };
-//            }
-//        };
+    private static Object proxyFunction(Function func) {
+        return Proxy.newProxyInstance(ClassLoader.getSystemClassLoader(), FUNC1_INTERFACES, new Func1InvocationHandler(func));
     }
 
     public static <A, B, C, R> Func1<A, Func1<B, Func1<C, R>>> curry(final Func3<A, B, C, R> func) {
