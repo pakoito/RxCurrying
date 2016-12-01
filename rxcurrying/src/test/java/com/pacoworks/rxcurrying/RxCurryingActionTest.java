@@ -28,8 +28,9 @@ import rx.functions.Func1;
  * Created by Paco on 14/02/2016. See LICENSE.md
  */
 public class RxCurryingActionTest {
+
     @Test
-    public void curry() throws Exception {
+    public void curry_withAction2() throws Exception {
         Func1<Integer, Action1<Integer>> variable = RxCurryingAction
                 .curry(new Action2<Integer, Integer>() {
                     @Override
@@ -40,4 +41,5 @@ public class RxCurryingActionTest {
         Action1<Integer> firstForm = variable.call(3);
         firstForm.call(2);
     }
+
 }

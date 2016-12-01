@@ -34,8 +34,6 @@ import rx.functions.Function;
  */
 public class RxCurryingFunc {
 
-    private static final Class[] FUNC1_INTERFACES = new Class[]{Func1.class};
-
     protected RxCurryingFunc() {
     }
 
