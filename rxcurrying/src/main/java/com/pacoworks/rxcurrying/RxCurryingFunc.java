@@ -36,6 +36,7 @@ import rx.functions.Function;
  *
  * @author pakoito
  */
+@SuppressWarnings("unchecked")
 public class RxCurryingFunc {
 
     private static final Class[] FUNC1_INTERFACES = new Class[]{Func1.class};
@@ -127,32 +128,7 @@ public class RxCurryingFunc {
 
     public static <A, B, C, D, E, R> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, R>>>>> curry(
             final Func5<A, B, C, D, E, R> func) {
-        return new Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, R>>>>>() {
-            @Override
-            public Func1<B, Func1<C, Func1<D, Func1<E, R>>>> call(final A a) {
-                return new Func1<B, Func1<C, Func1<D, Func1<E, R>>>>() {
-                    @Override
-                    public Func1<C, Func1<D, Func1<E, R>>> call(final B b) {
-                        return new Func1<C, Func1<D, Func1<E, R>>>() {
-                            @Override
-                            public Func1<D, Func1<E, R>> call(final C c) {
-                                return new Func1<D, Func1<E, R>>() {
-                                    @Override
-                                    public Func1<E, R> call(final D d) {
-                                        return new Func1<E, R>() {
-                                            @Override
-                                            public R call(final E e) {
-                                                return func.call(a, b, c, d, e);
-                                            }
-                                        };
-                                    }
-                                };
-                            }
-                        };
-                    }
-                };
-            }
-        };
+        return (Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, R>>>>>) proxyFunction(func);
     }
 
     public static <A, B, C, D, E, F, R> Func1<A, Func1<B, Func1<C, Func1<D, Func1<E, Func1<F, R>>>>>> curry(
