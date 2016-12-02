@@ -27,7 +27,7 @@ class CompositeFunctionBuilder<T> {
         final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         return (T) Proxy.newProxyInstance(
             classLoader,  new Class<?>[] { targetNestedFunctionTypes[0] },
-            invocationHandlerFor(Arrays.copyOfRange(targetNestedFunctionTypes, 1, targetNestedFunctionTypes.length), classLoader)
+            invocationHandlerFor(targetNestedFunctionTypes, classLoader)
         );
     }
 

@@ -18,7 +18,7 @@ class CompositeFunctionInvocationHandler<T> implements InvocationHandler {
         this.sourceFunction = sourceFunction;
         this.callMethod = sourceFunction.getClass().getMethods()[0];
         this.classLoader = classLoader;
-        this.targetNestedFunctionTypes = targetNestedFunctionTypes;
+        this.targetNestedFunctionTypes = tail(targetNestedFunctionTypes);
         this.targetArgumentCount = callMethod.getParameters().length;
         this.arguments = new Object[0];
     }
@@ -27,7 +27,7 @@ class CompositeFunctionInvocationHandler<T> implements InvocationHandler {
         this.sourceFunction = original.sourceFunction;
         this.callMethod = original.callMethod;
         this.targetArgumentCount = original.targetArgumentCount;
-        this.targetNestedFunctionTypes = Arrays.copyOfRange(original.targetNestedFunctionTypes, 1, original.targetNestedFunctionTypes.length);
+        this.targetNestedFunctionTypes = tail(original.targetNestedFunctionTypes);
         this.classLoader = original.classLoader;
         this.arguments = arguments;
     }
@@ -46,10 +46,14 @@ class CompositeFunctionInvocationHandler<T> implements InvocationHandler {
         }
     }
 
-    private static Object[] append(Object[] head, Object tail) {
-        Object[] result = Arrays.copyOf(head, head.length + 1);
+    private static <T> T[] append(T[] head, T tail) {
+        T[] result = Arrays.copyOf(head, head.length + 1);
         result[head.length] = tail;
         return result;
+    }
+
+    private static <T> T[] tail(T[] array) {
+        return Arrays.copyOfRange(array, 1, array.length);
     }
 
     private ClassLoader classloader() {
