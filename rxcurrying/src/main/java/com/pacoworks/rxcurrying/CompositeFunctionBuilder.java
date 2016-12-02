@@ -14,21 +14,21 @@ class CompositeFunctionBuilder<T> {
         return new CompositeFunctionBuilder<>(targetFunction);
     }
 
-    T intoMany(Class<?> targetNestedFunctionType) {
+    T intoMany(Class<?>... targetNestedFunctionType) {
         return createProxy(targetNestedFunctionType);
     }
 
     @SuppressWarnings("unchecked")
-    private T createProxy(Class<?> targetNestedFunctionTypes) {
+    private T createProxy(Class<?>[] targetNestedFunctionTypes) {
         final ClassLoader classLoader = ClassLoader.getSystemClassLoader();
         return (T) Proxy.newProxyInstance(
-            classLoader, new Class[] { targetNestedFunctionTypes },
+            classLoader, targetNestedFunctionTypes,
             invocationHandlerFor(targetNestedFunctionTypes, classLoader)
         );
     }
 
     @SuppressWarnings("unchecked")
-    private CompositeFunctionInvocationHandler invocationHandlerFor(Class<?> targetNestedFunctionTypes, ClassLoader classLoader) {
+    private CompositeFunctionInvocationHandler invocationHandlerFor(Class<?>[] targetNestedFunctionTypes, ClassLoader classLoader) {
         return new CompositeFunctionInvocationHandler(
             sourceFunction,
             classLoader,
