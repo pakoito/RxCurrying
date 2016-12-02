@@ -27,37 +27,17 @@ public class RxCurryingAction {
     private RxCurryingAction() {
     }
 
+    @SuppressWarnings("unchecked")
+    private static <T> T proxyFunction(Action action, int times) {
+        return CompositeFunctionBuilder.<T>compose(action).into(times, Func1.class, Action1.class);
+    }
+
     public static <A, B> Func1<A, Action1<B>> curry(final Action2<A, B> action) {
-        return new Func1<A, Action1<B>>() {
-            @Override
-            public Action1<B> call(final A a) {
-                return new Action1<B>() {
-                    @Override
-                    public void call(final B b) {
-                        action.call(a, b);
-                    }
-                };
-            }
-        };
+        return proxyFunction(action, 1);
     }
 
     public static <A, B, C> Func1<A, Func1<B, Action1<C>>> curry(final Action3<A, B, C> action) {
-        return new Func1<A, Func1<B, Action1<C>>>() {
-            @Override
-            public Func1<B, Action1<C>> call(final A a) {
-                return new Func1<B, Action1<C>>() {
-                    @Override
-                    public Action1<C> call(final B b) {
-                        return new Action1<C>() {
-                            @Override
-                            public void call(final C c) {
-                                action.call(a, b, c);
-                            }
-                        };
-                    }
-                };
-            }
-        };
+        return proxyFunction(action, 2);
     }
 
     public static <A, B, C, D> Func1<A, Func1<B, Func1<C, Action1<D>>>> curry(

@@ -27,7 +27,7 @@ class CompositeFunctionInvocationHandler<T> implements InvocationHandler {
         this.sourceFunction = original.sourceFunction;
         this.callMethod = original.callMethod;
         this.targetArgumentCount = original.targetArgumentCount;
-        this.targetNestedFunctionTypes = original.targetNestedFunctionTypes;
+        this.targetNestedFunctionTypes = Arrays.copyOfRange(original.targetNestedFunctionTypes, 1, original.targetNestedFunctionTypes.length);
         this.classLoader = original.classLoader;
         this.arguments = arguments;
     }
@@ -40,7 +40,7 @@ class CompositeFunctionInvocationHandler<T> implements InvocationHandler {
         } else {
             return Proxy.newProxyInstance(
                 classloader(),
-                targetNestedFunctionTypes,
+                new Class<?>[] { targetNestedFunctionTypes[0] },
                 new CompositeFunctionInvocationHandler<>(this, newArguments)
             );
         }
