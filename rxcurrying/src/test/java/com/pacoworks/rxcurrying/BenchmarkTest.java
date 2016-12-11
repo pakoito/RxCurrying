@@ -62,14 +62,21 @@ public class BenchmarkTest {
     
     @Test
     public void benchmark_func9Curry() throws Exception {
+        for (int i = 0; i < 10000; i++) {
+            doReflexionFunc9Curry();
+        }
+        for (int i = 0; i < 10000; i++) {
+            doImplicitFunc9Curry();
+        }
+
         long start = System.nanoTime();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
             doReflexionFunc9Curry();
         }
         System.out.println("Reflexion curry time: " + (int) ((System.nanoTime() - start) / 1e6) + "ms");
 
         start = System.nanoTime();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 10000; i++) {
             doImplicitFunc9Curry();
         }
         System.out.println("Implicit curry time: " + (int) ((System.nanoTime() - start) / 1e6) + "ms");
