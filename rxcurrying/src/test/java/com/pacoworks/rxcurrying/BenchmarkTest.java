@@ -62,13 +62,6 @@ public class BenchmarkTest {
     
     @Test
     public void benchmark_func9Curry() throws Exception {
-        for (int i = 0; i < 10000; i++) {
-            doReflexionFunc9Curry();
-        }
-        for (int i = 0; i < 10000; i++) {
-            doImplicitFunc9Curry();
-        }
-
         long start = System.nanoTime();
         for (int i = 0; i < 10000; i++) {
             doReflexionFunc9Curry();
