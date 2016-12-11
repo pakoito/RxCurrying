@@ -18,6 +18,7 @@ package com.pacoworks.rxcurrying;
 
 import java.lang.reflect.Method;
 
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.functions.Func2;
 import rx.functions.Func3;
@@ -37,7 +38,7 @@ import rx.functions.Function;
 public class RxCurryingFunc {
 
     private static final Method[] FUNC_CALL_METHODS = {
-        null,
+        Func0.class.getMethods()[0],
         Func1.class.getMethods()[0],
         Func2.class.getMethods()[0],
         Func3.class.getMethods()[0],
@@ -84,8 +85,8 @@ public class RxCurryingFunc {
         return fuzzyFunction(func, 9);
     }
 
-    private static <T> FuzzyFunction.ArgumentConsumer consumeFunction(final T func, final Method method) {
-        return new FuzzyFunction.ArgumentConsumer() {
+    private static <T> ArgumentConsumer consumeFunction(final T func, final Method method) {
+        return new ArgumentConsumer() {
             @Override
             public Object onArgumentsReady(Object[] a) {
                 try {
