@@ -1,10 +1,10 @@
-#RxCurrying
+# RxCurrying
 
 RxCurrying is a library to allow [currying](https://en.wikipedia.org/wiki/Currying) on RxJava function primitives.
 
 For the RxJava 2.X version, please go to [RxCurrying2](https://github.com/pakoito/RxCurrying2).
 
-##Usage
+## Usage
 
 RxCurrying contains two classes, `RxCurryingAction` and `RxCurryingFunc`. Each contains a set of `curry()` methods to do split any function into its curried version. Curried methods allows calling them one parameter at a time, and execute them at the end. For example, a `Func3<A, B, C, R>` becomes a `Func1<A, Func1<B, Func1<C, R>>>`, or an `Action4<A, B, C, D>` becomes `Func1<A, Func1<B, Func1<C, Action1<D>>>`.
 
@@ -22,7 +22,7 @@ Func1<String, String> intermediate = appender.call("Hello ").call("This ").call(
 String value = last.call("Func"); // value == "Hello This is Curried Func"
 ```
 
-##Distribution
+## Distribution
 
 Add as a dependency to your `build.gradle`
 ```groovy
@@ -53,7 +53,7 @@ or to your `pom.xml`
     <version>1.1.0</version>
 </dependency>
 ```
-##License
+## License
 
 Copyright (c) pakoito 2016
 
